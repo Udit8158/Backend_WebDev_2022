@@ -1,0 +1,16 @@
+{
+  "name": "04_chapter_4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "logEvent.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.29.3",
+    "uuid": "^9.0.0"
+  }
+}
