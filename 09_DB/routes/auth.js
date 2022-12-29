@@ -55,17 +55,16 @@ router.route("/login").post(async (req, res) => {
       { username: req.body.username },
       { refreshToken: refreshToken }
     );
-    const updatedUser = await User.findOne({ username: req.body.username });
 
     // send access token as cookie
-    res.cookie("accessToken", accessToken, {
-      maxAge: 30 * 60 * 1000,
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 60 * 1000,
       httpOnly: true,
     });
     res.json({
       username: user.username,
       id: user._id,
-      refreshToken: updatedUser.refreshToken,
+      accessToken,
     });
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -80,7 +79,22 @@ router.route("/logout").get(verifyToken, async (req, res) => {
     { refreshToken: null }
   );
   // and clear the access token from cookie
-  res.status(200).clearCookie("accessToken").json("success");
+  res.status(200).clearCookie("refreshToken").json("success");
+});
+
+// REFRESH
+router.get("/refresh", verifyToken, async (req, res) => {
+  const { username, password } = req.user;
+
+  const newAccessToken = createAccessToken({ username, password });
+
+  res
+    .status(200)
+    .cookie("access_token", newAccessToken, {
+      maxAge: 60 * 1000,
+      httpOnly: true,
+    })
+    .send({ msg: "success" });
 });
 
 module.exports = router;

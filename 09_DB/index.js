@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const { verifyToken } = require("./middlewares/verifyToken");
 const authRouter = require("./routes/auth");
 const postsRouter = require("./routes/posts");
+const cors = require("cors");
 
 const app = express();
 const dbURI =
@@ -18,6 +19,7 @@ mongoose
   .catch((err) => console.log(err));
 
 //Middlewares
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 

@@ -1,7 +1,9 @@
 const { verify } = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  const { accessToken } = req.cookies;
+  const authHeader = req.headers["authorization"];
+
+  const accessToken = authHeader?.split(" ")[1];
 
   if (!accessToken) return res.status(403).json({ error: "Unauthorized" });
 
